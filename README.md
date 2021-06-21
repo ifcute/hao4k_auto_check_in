@@ -21,6 +21,10 @@
 
 - Fork 本仓库
 - 配置 hao4k 账户信息（由于是敏感信息，所以将其配置到了仓库 `setting/secrets` 下）
+  - Settings -> Secrets -> New repositoty secret
+    - Name = HAO4K_USERNAME, Value = 
+    - Name = HAO4K_PASSWORD, Value = 
+    - Name = SERVERCHAN_SCKEY, Value = 
   - 找到 [.github/workflows/hao4k.yml](https://github.com/cy920820/hao4k-signin-action/blob/main/.github/workflows/hao4k.yml) line 27, `env` 下的三个 secret
     - HAO4K_USERNAME
     - HAO4K_PASSWORD
