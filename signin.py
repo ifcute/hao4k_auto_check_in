@@ -2,6 +2,7 @@
 import requests
 import os
 import re
+import time  # 引入time模块
 
 # hao4k 账户信息
 username = os.environ["HAO4K_USERNAME"]
@@ -14,7 +15,7 @@ send_content = 'Server ERROR'
 
 # Bark 通知
 bark_key = os.environ["SECRET_BARK_KEY"]
-bark_url = "https://api.day.app/%s/Hao4K签到/%s" % (bark_key, username)
+bark_url = "https://api.day.app/%s/Hao4K签到结果通知/" % (bark_key)
 
 # hao4k 签到 url
 user_url = "https://www.hao4k.cn/member.php?mod=logging&action=login"
@@ -82,14 +83,16 @@ if __name__ == "__main__":
     send_content = signin_log
     print(signin_log)
 
-  params = {'title': 'Hao4k 每日签到结果通知：', 'desp': send_content}
-  r = requests.post(send_url, params=params)
-  if r.status_code == 200:
-    print('已通知 server 酱')
-  else:
-    print('通知 Server 酱推送失败，详情：\n请求状态码：{}\n{}'.format(r.status_code, r.text))
+  #params = {'title': 'Hao4k 每日签到结果通知：', 'desp': send_content}
+  #r = requests.post(send_url, params=params)
+  #if r.status_code == 200:
+  #  print('已通知 server 酱')
+  #else:
+  #  print('通知 Server 酱推送失败，详情：\n请求状态码：{}\n{}'.format(r.status_code, r.text))
 
-  r = requests.post(bark_url)
+  tim = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+  url = "%s\n%s\n%s\n%s" %(bark_url, username, tim, send_content)
+  r = requests.post(url)
   if r.status_code == 200:
     print('已通知 BEAK')
   else:
