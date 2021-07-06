@@ -12,7 +12,7 @@ sckey = os.environ["SERVERCHAN_SCKEY"]
 send_url = "https://sctapi.ftqq.com/%s.send" % (sckey)
 send_content = 'Server ERROR'
 
-# Baek
+# Bark 通知
 bark_key = os.environ["SECRET_BARK_KEY"]
 bark_url = "https://api.day.app/%s/标题1/推送内容1" % (bark_key)
 

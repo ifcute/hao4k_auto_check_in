@@ -28,4 +28,5 @@ jobs:
         HAO4K_USERNAME: ${{ secrets.HAO4K_USERNAME_2 }}
         HAO4K_PASSWORD: ${{ secrets.HAO4K_PASSWORD }}
         SERVERCHAN_SCKEY: ${{ secrets.SERVERCHAN_SCKEY }}
+        SECRET_BARK_KEY: ${{ secrets.SECRET_BARK_KEY }}
       run: python signin.py
