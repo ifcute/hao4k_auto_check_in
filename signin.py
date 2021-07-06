@@ -12,6 +12,10 @@ sckey = os.environ["SERVERCHAN_SCKEY"]
 send_url = "https://sctapi.ftqq.com/%s.send" % (sckey)
 send_content = 'Server ERROR'
 
+# Baek
+beak_key = os.environ["BAEK_KEY"]
+beak_url = "https://api.day.app/%s/标题1/推送内容1" % (beak_key)
+
 # hao4k 签到 url
 user_url = "https://www.hao4k.cn/member.php?mod=logging&action=login"
 base_url = "https://www.hao4k.cn/"
@@ -84,3 +88,10 @@ if __name__ == "__main__":
     print('已通知 server 酱')
   else:
     print('通知 Server 酱推送失败，详情：\n请求状态码：{}\n{}'.format(r.status_code, r.text))
+
+  r = requests.post(beak_url)
+  if r.status_code == 200:
+    print('已通知 BEAK')
+  else:
+    print('通知 BEAK 推送失败，详情：\n请求状态码：{}\n{}'.format(r.status_code, r.text))
+
