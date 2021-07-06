@@ -92,7 +92,8 @@ if __name__ == "__main__":
 
   tim = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
   url = "%s\n%s\n%s\n%s" %(bark_url, username, tim, send_content)
-  r = requests.post(url)
+  params = {'group': 'Hao4k 每日签到结果通知'}
+  r = requests.post(url, params=params)
   if r.status_code == 200:
     print('已通知 BEAK')
   else:
