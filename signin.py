@@ -57,25 +57,30 @@ def run(form_data):
       print(test_resp.text)
       return '签到失败或者已经签到，请登录 hao4k 查看签到状态'
 
-
+# 可以理解为程序的入口
 if __name__ == "__main__":
+  # 判断参数信息是否存在
   if not username or not password or not sckey:
     print('未找到登录信息，请参考 readme 中指导，前往仓库 setting/secrets，添加对应 key')
+    # 执行异常处理命令
     raise Exception('Could not find any keys')
+    # 异常处理执行后，不在执行后续语句
+
+  # 执行登录流程，若登录成功返回信息为空，若登录失败将失败信息放到signin_log
+  signin_log = run(form_data)
+
+  # 判断signin_log是否为空，为空表示登录成功
+  if signin_log is None:
+    send_content = "hao4k 每日签到成功！"
+    print('Sign in automatically!')
+  # 不为空，登录失败，打印失败信息
   else:
-    signin_log = run(form_data)
+    send_content = signin_log
+    print(signin_log)
 
-    if signin_log is None:
-      send_content = "hao4k 每日签到成功！"
-      print('Sign in automatically!')
-    else:
-      send_content = signin_log
-      print(signin_log)
-    
-    params = {'title': 'Hao4k 每日签到结果通知：', 'desp': send_content}
-
-    r = requests.post(send_url, params=params)
-    if r.status_code == 200:
-      print('已通知 server 酱')
-    else:
-      print('通知 Server 酱推送失败，详情：\n请求状态码：{}\n{}'.format(r.status_code, r.text))
+  params = {'title': 'Hao4k 每日签到结果通知：', 'desp': send_content}
+  r = requests.post(send_url, params=params)
+  if r.status_code == 200:
+    print('已通知 server 酱')
+  else:
+    print('通知 Server 酱推送失败，详情：\n请求状态码：{}\n{}'.format(r.status_code, r.text))
