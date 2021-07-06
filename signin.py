@@ -14,7 +14,7 @@ send_content = 'Server ERROR'
 
 # Bark 通知
 bark_key = os.environ["SECRET_BARK_KEY"]
-bark_url = "https://api.day.app/%s/标题1/推送内容1" % (bark_key)
+bark_url = "https://api.day.app/%s/Hao4K签到/%s" % (bark_key) % (username)
 
 # hao4k 签到 url
 user_url = "https://www.hao4k.cn/member.php?mod=logging&action=login"
