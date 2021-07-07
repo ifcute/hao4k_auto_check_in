@@ -35,6 +35,7 @@ consecutive_days = ''     # 连续天数
 signin_level = ''         # 签到等级
 points_reward = ''        # 积分奖励
 total_days = ''           # 总天数
+today_signin = ''         # 今日签到数
 
 
 def run(form_data):
@@ -81,15 +82,20 @@ def run(form_data):
   global signin_level         # 签到等级
   global points_reward        # 积分奖励
   global total_days           # 总天数
+  global today_signin         # 今日签到数
   form_text1 = re.search(r'您的签到排名：\d+', test_resp.text)
   signin_ranking = form_text1.group()
+  form_text1 = re.search(r'\d+<span>人</span>', test_resp.text)
+  today_signin = form_text1.group()
+  print("############ [%d] %s" % (sys._getframe().f_lineno, today_signin))
+  today_signin = today_signin.replace("<.*?>", "")     # 将"<.*?>"替换为""，及删除"<.*?>";
   html = etree.HTML(test_resp.text)
   value = html.xpath('//input[@id="lxdays"]/@value')[0]
   consecutive_days = "连续天数：%s天" %(value)
   value = html.xpath('//input[@id="lxlevel"]/@value')[0]
   signin_level = "签到等级：%s" %(value)
   value = html.xpath('//input[@id="lxreward"]/@value')[0]
-  signin_level = "积分奖励：%s" %(value)
+  points_reward = "积分奖励：%s" %(value)
   value = html.xpath('//input[@id="lxtdays"]/@value')[0]
   total_days = "总天数：%s天" %(value)
   print("############ [%d] %s" % (sys._getframe().f_lineno, signin_ranking))
@@ -97,6 +103,7 @@ def run(form_data):
   print("############ [%d] %s" % (sys._getframe().f_lineno, signin_level))
   print("############ [%d] %s" % (sys._getframe().f_lineno, points_reward))
   print("############ [%d] %s" % (sys._getframe().f_lineno, total_days))
+  print("############ [%d] %s" % (sys._getframe().f_lineno, today_signin))
 
 
 
@@ -126,7 +133,7 @@ if __name__ == "__main__":
   tz = pytz.timezone('Asia/Shanghai') #东八区
   tim = datetime.fromtimestamp(int(time.time()),
     pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-  message = "Hao4K签到结果通知/%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(username, tim, send_content, signin_ranking, consecutive_days, signin_level, points_reward, total_days)
+  message = "Hao4K签到结果通知/%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(username, tim, send_content, signin_ranking, consecutive_days, signin_level, points_reward, total_days, today_signin)
   url = "%s%s" %(bark_url, message)
   params = {'group': 'Hao4k 每日签到结果通知'}
   r = requests.post(url, params=params)
