@@ -83,7 +83,8 @@ def run(form_data):
   global total_days           # 总天数
   form_text1 = re.search(r'您的签到排名：\d+', test_resp.text)
   signin_ranking = form_text1.group()
-  value = test_resp.text.xpath('//input[@id="lxlevel"]/@value')[0]
+  html = etree.HTML(test_resp.text)
+  value = html.xpath('//input[@id="lxlevel"]/@value')[0]
   consecutive_days = "连续天数：%d天" %(value)
   print("############ [%d] %s" % (sys._getframe().f_lineno, signin_ranking))
   print("############ [%d] %s" % (sys._getframe().f_lineno, consecutive_days))
