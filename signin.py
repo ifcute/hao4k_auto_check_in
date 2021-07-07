@@ -85,6 +85,7 @@ def run(form_data):
   signin_ranking = form_text1.group()
   html = etree.HTML(test_resp.text)
   value = html.xpath('//input[@id="lxlevel"]/@value')[0]
+  print("------" + value)
   consecutive_days = "连续天数：%d天" %(value)
   print("############ [%d] %s" % (sys._getframe().f_lineno, signin_ranking))
   print("############ [%d] %s" % (sys._getframe().f_lineno, consecutive_days))
