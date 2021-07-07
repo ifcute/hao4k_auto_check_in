@@ -67,7 +67,7 @@ def run(form_data):
   else:
     print(test_resp.text)
     return '签到失败或者已经签到，请登录 hao4k 查看签到状态'
-  form_text = re.search('您的签到排名(.*?)', test_resp.text)
+  form_text = re.search(r'您的签到排名：\d+', test_resp.text)
   print("############ [%d] %s" % (sys._getframe().f_lineno, form_text))
 
 # 可以理解为程序的入口
