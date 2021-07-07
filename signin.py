@@ -28,6 +28,8 @@ form_data = {
     'answer': ""
 }
 inajax = '&inajax=1'
+signin_ranking = ''
+
 
 def run(form_data):
   # 通过Session类新建一个会话（会话保持）
@@ -67,8 +69,10 @@ def run(form_data):
   else:
     print(test_resp.text)
     return '签到失败或者已经签到，请登录 hao4k 查看签到状态'
-  form_text = re.search(r'您的签到排名：\d+', test_resp.text)
-  print("############ [%d] %s" % (sys._getframe().f_lineno, form_text))
+  signin_ranking = re.search(r'您的签到排名：\d+', test_resp.text).group(1)
+  print("############ [%d] %s" % (sys._getframe().f_lineno, signin_ranking))
+
+
 
 # 可以理解为程序的入口
 if __name__ == "__main__":
@@ -96,7 +100,7 @@ if __name__ == "__main__":
   tz = pytz.timezone('Asia/Shanghai') #东八区
   tim = datetime.fromtimestamp(int(time.time()),
     pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-  url = "%s\n%s\n%s\n%s" %(bark_url, username, tim, send_content)
+  url = "%s\n%s\n%s\n%s\n%s" %(bark_url, username, tim, send_content, signin_ranking)
   params = {'group': 'Hao4k 每日签到结果通知'}
   r = requests.post(url, params=params)
   if r.status_code == 200:
