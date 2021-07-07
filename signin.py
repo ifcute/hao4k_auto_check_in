@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 import pytz
 import sys
+from lxml import etree
 
 # hao4k 账户信息
 username = os.environ["HAO4K_USERNAME"]

@@ -43,7 +43,7 @@ jobs:
 
     # 第三步：安装依赖
     - name: Install dependencies
-      run: python -m pip install --upgrade requests pytz
+      run: python -m pip install --upgrade requests pytz lxml
 
     # 第四步：执行签到
     - name: Hao4k auto sign in User1
