@@ -71,8 +71,8 @@ def run(form_data):
     return '签到失败或者已经签到，请登录 hao4k 查看签到状态'
   form_text1 = re.search(r'您的签到排名：\d+', test_resp.text)
   print("############ [%d] %s" % (sys._getframe().f_lineno, form_text1))
-  print("############ [%d] %s" % (sys._getframe().f_lineno, form_text1.group(1)))
-  signin_ranking = form_text1.group(1)
+  print("############ [%d] %s" % (sys._getframe().f_lineno, form_text1.group()))
+  signin_ranking = form_text1.group()
   print("############ [%d] %s" % (sys._getframe().f_lineno, signin_ranking))
 
 
