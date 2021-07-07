@@ -36,6 +36,8 @@ signin_level = ''         # 签到等级
 points_reward = ''        # 积分奖励
 total_days = ''           # 总天数
 today_signin = ''         # 今日签到数
+h_currency = ''           # H币
+k_currency = ''           # K币
 
 
 def run(form_data):
@@ -83,11 +85,12 @@ def run(form_data):
   global points_reward        # 积分奖励
   global total_days           # 总天数
   global today_signin         # 今日签到数
+  global h_currency           # H币
+  global k_currency           # K币
   form_text1 = re.search(r'您的签到排名：\d+', test_resp.text)
   signin_ranking = form_text1.group()
   form_text1 = re.search(r'\d+<span>人</span>', test_resp.text)
   today_signin = form_text1.group()
-  print("############ [%d] %s" % (sys._getframe().f_lineno, today_signin))
   today_signin = "今日签到人数：" + re.sub(r'\<[^>]*\>', '', today_signin)  # 删除尖括号内的内容
   html = etree.HTML(test_resp.text)
   value = html.xpath('//input[@id="lxdays"]/@value')[0]
@@ -104,11 +107,19 @@ def run(form_data):
   print("############ [%d] %s" % (sys._getframe().f_lineno, points_reward))
   print("############ [%d] %s" % (sys._getframe().f_lineno, total_days))
   print("############ [%d] %s" % (sys._getframe().f_lineno, today_signin))
+
+  # 积分页面（获取H币K币信息）
   params = {'mod': 'spacecp', 'ac': 'credit'}
   url = 'https://www.hao4k.cn/home.php'
   test_resp1 = s.post(url, params=params)
-  print(test_resp1)
-  print(test_resp1.text)
+  form_text1 = re.search(r'<em> H币: </em>\d+', test_resp1.text)
+  h_currency = form_text1.group()
+  h_currency = re.sub(r'\<[^>]*\>', '', h_currency)  # 删除尖括号内的内容
+  form_text1 = re.search(r'<em> K币: </em>\d+', test_resp1.text)
+  k_currency = form_text1.group()
+  k_currency = re.sub(r'\<[^>]*\>', '', k_currency)  # 删除尖括号内的内容
+  print("############ [%d] %s" % (sys._getframe().f_lineno, h_currency))
+  print("############ [%d] %s" % (sys._getframe().f_lineno, k_currency))
 
 
 # 可以理解为程序的入口
@@ -137,7 +148,7 @@ if __name__ == "__main__":
   tz = pytz.timezone('Asia/Shanghai') #东八区
   tim = datetime.fromtimestamp(int(time.time()),
     pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-  message = "Hao4K签到结果通知/%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(username, tim, send_content, signin_ranking, consecutive_days, signin_level, points_reward, total_days, today_signin)
+  message = "Hao4K签到结果通知/%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(username, tim, send_content, signin_ranking, consecutive_days, signin_level, points_reward, total_days, today_signin, h_currency, k_currency)
   url = "%s%s" %(bark_url, message)
   params = {'group': 'Hao4k 每日签到结果通知'}
   r = requests.post(url, params=params)
