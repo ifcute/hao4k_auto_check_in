@@ -28,7 +28,8 @@ form_data = {
     'answer': ""
 }
 inajax = '&inajax=1'
-signin_ranking = ''
+
+signin_ranking = ''     # 签到排名
 
 
 def run(form_data):
@@ -70,8 +71,7 @@ def run(form_data):
     print(test_resp.text)
     return '签到失败或者已经签到，请登录 hao4k 查看签到状态'
   form_text1 = re.search(r'您的签到排名：\d+', test_resp.text)
-  print("############ [%d] %s" % (sys._getframe().f_lineno, form_text1))
-  print("############ [%d] %s" % (sys._getframe().f_lineno, form_text1.group()))
+  global signin_ranking
   signin_ranking = form_text1.group()
   print("############ [%d] %s" % (sys._getframe().f_lineno, signin_ranking))
 
