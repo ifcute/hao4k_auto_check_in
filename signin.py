@@ -60,7 +60,7 @@ def run(form_data):
 # 可以理解为程序的入口
 if __name__ == "__main__":
   # 判断参数信息是否存在
-  if not username or not password or not sckey:
+  if not username or not password or not bark_key:
     print('未找到登录信息，请参考 readme 中指导，前往仓库 setting/secrets，添加对应 key')
     # 执行异常处理命令
     raise Exception('Could not find any keys')
