@@ -29,35 +29,44 @@ form_data = {
 inajax = '&inajax=1'
 
 def run(form_data):
-    s = requests.Session()
-    s.headers.update({'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'})
-    headers = {"Content-Type": "text/html", 'Connection': 'close'}
-    user_resp = s.get(user_url, headers=headers)
-    login_text = re.findall('action="(.*?)"', user_resp.text)
-    for loginhash in login_text:
-        if 'loginhash' in loginhash:
-            login_url = base_url + loginhash + inajax
-            login_url = login_url.replace("amp;", "")
-            print(login_url)
-    form_text = re.search('formhash=(.*?)\'', user_resp.text)
-    print(form_text.group(1))
-    form_data['formhash'] = form_text.group(1)
-    print(form_data)
+  # 通过Session类新建一个会话（会话保持）
+  s = requests.Session()
+  s.headers.update({'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'})
+  headers = {"Content-Type": "text/html", 'Connection': 'close'}
+  # 发送网络请求
+  user_resp = s.get(user_url, headers=headers)
+  print("############ 1")
+  print(user_resp)
+  # 返回 user_resp.text 中所有与 action="(.*?)" 相匹配的全部字串，返回形式为数组
+  login_text = re.findall('action="(.*?)"', user_resp.text)
+  print("############ 2")
+  print(login_text)
+  for loginhash in login_text:
+    if 'loginhash' in loginhash:
+      login_url = base_url + loginhash + inajax
+      login_url = login_url.replace("amp;", "")     # 将"amp;"替换为""，及删除amp;
+      print(login_url)
+  # 返回 user_resp.text 中与 formhash=(.*?)\' 相匹配的第一个字串
+  form_text = re.search('formhash=(.*?)\'', user_resp.text)
+  print(form_text.group(1))
+  form_data['formhash'] = form_text.group(1)        # 记录验证数据
+  print(form_data)
 
-    login_resp = s.post(login_url, data=form_data)
-    test_resp = s.get('https://www.hao4k.cn/k_misign-sign.html', headers=headers)
-    if username in test_resp.text:
-      print('登陆成功')
-    else:
-      return '登录失败'
-    signin_text = re.search('formhash=(.*?)"', test_resp.text)
-    signin_resp = s.get(signin_url.format(formhash=signin_text.group(1)))
-    test_resp = s.get('https://www.hao4k.cn/k_misign-sign.html', headers=headers)
-    if '您的签到排名' in test_resp.text:
-      print('signin!')
-    else:
-      print(test_resp.text)
-      return '签到失败或者已经签到，请登录 hao4k 查看签到状态'
+  login_resp = s.post(login_url, data=form_data)
+  test_resp = s.get('https://www.hao4k.cn/k_misign-sign.html', headers=headers)
+  if username in test_resp.text:
+    print('登陆成功')
+  else:
+    return '登录失败'
+  # 返回 test_resp.text 中与 formhash=(.*?)" 相匹配的第一个字串
+  signin_text = re.search('formhash=(.*?)"', test_resp.text)
+  signin_resp = s.get(signin_url.format(formhash=signin_text.group(1)))
+  test_resp = s.get('https://www.hao4k.cn/k_misign-sign.html', headers=headers)
+  if '您的签到排名' in test_resp.text:
+    print('signin!')
+  else:
+    print(test_resp.text)
+    return '签到失败或者已经签到，请登录 hao4k 查看签到状态'
 
 # 可以理解为程序的入口
 if __name__ == "__main__":
