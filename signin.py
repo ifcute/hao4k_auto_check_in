@@ -5,6 +5,7 @@ import re
 import time
 from datetime import datetime
 import pytz
+import sys
 
 # hao4k 账户信息
 username = os.environ["HAO4K_USERNAME"]
@@ -35,22 +36,20 @@ def run(form_data):
   headers = {"Content-Type": "text/html", 'Connection': 'close'}
   # 发送网络请求
   user_resp = s.get(user_url, headers=headers)
-  print("############ 1")
-  print(user_resp)
+  print("############ [" + sys._getframe().f_lineno + "] " + user_resp.text)
   # 返回 user_resp.text 中所有与 action="(.*?)" 相匹配的全部字串，返回形式为数组
   login_text = re.findall('action="(.*?)"', user_resp.text)
-  print("############ 2")
-  print(login_text)
+  print("############ [" + sys._getframe().f_lineno + "] " + login_text)
   for loginhash in login_text:
     if 'loginhash' in loginhash:
       login_url = base_url + loginhash + inajax
       login_url = login_url.replace("amp;", "")     # 将"amp;"替换为""，及删除amp;
-      print(login_url)
+      print("############ [" + sys._getframe().f_lineno + "] " + login_url)
   # 返回 user_resp.text 中与 formhash=(.*?)\' 相匹配的第一个字串
   form_text = re.search('formhash=(.*?)\'', user_resp.text)
-  print(form_text.group(1))
+  print("############ [" + sys._getframe().f_lineno + "] " + form_text.group(1))
   form_data['formhash'] = form_text.group(1)        # 记录验证数据
-  print(form_data)
+  print("############ [" + sys._getframe().f_lineno + "] " + form_data)
 
   login_resp = s.post(login_url, data=form_data)
   test_resp = s.get('https://www.hao4k.cn/k_misign-sign.html', headers=headers)
