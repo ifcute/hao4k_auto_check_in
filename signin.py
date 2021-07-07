@@ -2,7 +2,9 @@
 import requests
 import os
 import re
-import time  # 引入time模块
+import time
+from datetime import datetime
+import pytz
 
 # hao4k 账户信息
 username = os.environ["HAO4K_USERNAME"]
@@ -79,7 +81,10 @@ if __name__ == "__main__":
     print(signin_log)
 
   # BARK 消息推送
-  tim = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+  #tim = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+  tz = pytz.timezone('Asia/Shanghai') #东八区
+  tim = datetime.fromtimestamp(int(time.time()),
+    pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
   url = "%s\n%s\n%s\n%s" %(bark_url, username, tim, send_content)
   params = {'group': 'Hao4k 每日签到结果通知'}
   r = requests.post(url, params=params)
