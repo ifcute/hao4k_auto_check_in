@@ -14,7 +14,7 @@ password = os.environ["HAO4K_PASSWORD"]
 
 # Bark 通知
 bark_key = os.environ["SECRET_BARK_KEY"]
-bark_url = "https://api.day.app/%s/Hao4K签到结果通知/" % (bark_key)
+bark_url = "https://api.day.app/%s/" % (bark_key)
 
 # hao4k 签到 url
 user_url = "https://www.hao4k.cn/member.php?mod=logging&action=login"
@@ -69,7 +69,7 @@ def run(form_data):
   signin_text = re.search('formhash=(.*?)"', test_resp.text)
   signin_resp = s.get(signin_url.format(formhash=signin_text.group(1)))
   test_resp = s.get('https://www.hao4k.cn/k_misign-sign.html', headers=headers)
-  print("############ [%d] %s" % (sys._getframe().f_lineno, test_resp.text))
+  #print("############ [%d] %s" % (sys._getframe().f_lineno, test_resp.text))
   if '您的签到排名' in test_resp.text:
     print('signin!')
   else:
@@ -85,14 +85,13 @@ def run(form_data):
   signin_ranking = form_text1.group()
   html = etree.HTML(test_resp.text)
   value = html.xpath('//input[@id="lxdays"]/@value')[0]
-  print("------" + value)
   consecutive_days = "连续天数：%s天" %(value)
   value = html.xpath('//input[@id="lxlevel"]/@value')[0]
-  consecutive_days = "签到等级：%s" %(value)
+  signin_level = "签到等级：%s" %(value)
   value = html.xpath('//input[@id="lxreward"]/@value')[0]
-  consecutive_days = "积分奖励：%s" %(value)
+  signin_level = "积分奖励：%s" %(value)
   value = html.xpath('//input[@id="lxtdays"]/@value')[0]
-  consecutive_days = "总天数：%s天" %(value)
+  total_days = "总天数：%s天" %(value)
   print("############ [%d] %s" % (sys._getframe().f_lineno, signin_ranking))
   print("############ [%d] %s" % (sys._getframe().f_lineno, consecutive_days))
   print("############ [%d] %s" % (sys._getframe().f_lineno, signin_level))
@@ -127,7 +126,8 @@ if __name__ == "__main__":
   tz = pytz.timezone('Asia/Shanghai') #东八区
   tim = datetime.fromtimestamp(int(time.time()),
     pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-  url = "%s\n%s\n%s\n%s\n%s" %(bark_url, username, tim, send_content, signin_ranking)
+  message = "Hao4K签到结果通知/%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(username, tim, send_content, signin_ranking, consecutive_days, signin_level, points_reward, total_days)
+  url = "%s%s" %(bark_url, message)
   params = {'group': 'Hao4k 每日签到结果通知'}
   r = requests.post(url, params=params)
   if r.status_code == 200:
