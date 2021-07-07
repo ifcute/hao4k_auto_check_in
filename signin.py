@@ -61,6 +61,7 @@ def run(form_data):
   signin_text = re.search('formhash=(.*?)"', test_resp.text)
   signin_resp = s.get(signin_url.format(formhash=signin_text.group(1)))
   test_resp = s.get('https://www.hao4k.cn/k_misign-sign.html', headers=headers)
+  print("############ [%d] %s" % (sys._getframe().f_lineno, test_resp.text))
   if '您的签到排名' in test_resp.text:
     print('signin!')
   else:
