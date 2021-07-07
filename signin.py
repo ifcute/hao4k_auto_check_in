@@ -36,7 +36,7 @@ def run(form_data):
   headers = {"Content-Type": "text/html", 'Connection': 'close'}
   # 发送网络请求
   user_resp = s.get(user_url, headers=headers)
-  print("############ [%d] %s" % (sys._getframe().f_lineno, user_resp.text))
+  #print("############ [%d] %s" % (sys._getframe().f_lineno, user_resp.text))
   # 返回 user_resp.text 中所有与 action="(.*?)" 相匹配的全部字串，返回形式为数组
   login_text = re.findall('action="(.*?)"', user_resp.text)
   print("############ [%d] %s" % (sys._getframe().f_lineno, login_text))
@@ -67,6 +67,8 @@ def run(form_data):
   else:
     print(test_resp.text)
     return '签到失败或者已经签到，请登录 hao4k 查看签到状态'
+  form_text = re.search('您的签到排名(.*?)', test_resp.text)
+  print("############ [%d] %s" % (sys._getframe().f_lineno, form_text))
 
 # 可以理解为程序的入口
 if __name__ == "__main__":
