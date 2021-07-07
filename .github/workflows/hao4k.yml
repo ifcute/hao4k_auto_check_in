@@ -1,0 +1,62 @@
+# 工作流程的名称。 GitHub 在仓库的操作页面上显示工作流程的名称。
+# 如果省略 name，GitHub 将其设置为相对于仓库根目录的工作流程文件路径。
+name: hao4k
+
+# 指定触发 workflow 的条件，通常是某些事件。
+on:
+  # 指定触发事件时，可以限定分支或标签。
+  # 只有main分支发生push事件时，才会触发 workflow。
+  push:
+    branches: 
+      - main
+  # 定时任务
+  schedule:
+    - cron: '33 0,9,14 * * *'
+
+# workflow 文件的主体是jobs字段，表示要执行的一项或多项任务。
+# 任务默认是并行运行。
+jobs:
+  # 任务的job_id，具体名称自定义。（可以有多项）
+  Hao4K-autoSignIn:
+    # 指定运行所需要的虚拟机环境。它是必填字段。
+    # 目前可用的虚拟机如下:
+    # ubuntu-latest，ubuntu-18.04或ubuntu-16.04
+    # windows-latest，windows-2019或windows-2016
+    # macOS-latest或macOS-10.14
+    runs-on: ubuntu-latest
+
+    # 指定每个 Job 的运行步骤，可以包含一个或多个步骤。
+    # 每个步骤都可以指定以下三个字段：
+    # jobs.<job_id>.steps.name：步骤名称，显示在 GitHub 上的名称。
+    # jobs.<job_id>.steps.run：该步骤运行的命令或者 action。
+    # jobs.<job_id>.steps.env：该步骤所需的环境变量。
+    steps:
+    # 第一步：获取main分支的源代码 “actions/checkout@main”
+    - name: checkout
+      uses: actions/checkout@main
+
+    # 第二步：配置Python环境
+    - name: Set python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    # 第三步：安装依赖
+    - name: Install dependencies
+      run: python -m pip install --upgrade requests
+
+    # 第四步：执行签到
+    - name: Hao4k auto sign in User1
+      env:
+        HAO4K_USERNAME: ${{ secrets.HAO4K_USERNAME }}
+        HAO4K_PASSWORD: ${{ secrets.HAO4K_PASSWORD }}
+        SECRET_BARK_KEY: ${{ secrets.SECRET_BARK_KEY }}
+      run: python signin.py
+
+    # 第五步：执行签到
+    - name: Hao4k auto sign in User2
+      env:
+        HAO4K_USERNAME: ${{ secrets.HAO4K_USERNAME_2 }}
+        HAO4K_PASSWORD: ${{ secrets.HAO4K_PASSWORD }}
+        SECRET_BARK_KEY: ${{ secrets.SECRET_BARK_KEY }}
+      run: python signin.py
