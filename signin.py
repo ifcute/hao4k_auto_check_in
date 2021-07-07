@@ -88,7 +88,7 @@ def run(form_data):
   form_text1 = re.search(r'\d+<span>人</span>', test_resp.text)
   today_signin = form_text1.group()
   print("############ [%d] %s" % (sys._getframe().f_lineno, today_signin))
-  today_signin = today_signin.replace("<.*?>", "")     # 将"<.*?>"替换为""，及删除"<.*?>";
+  today_signin = "今日签到人数：" + today_signin.replace("<(.*?)>", "")     # 将"<.*?>"替换为""，及删除"<.*?>";
   html = etree.HTML(test_resp.text)
   value = html.xpath('//input[@id="lxdays"]/@value')[0]
   consecutive_days = "连续天数：%s天" %(value)
