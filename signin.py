@@ -104,7 +104,7 @@ def run(form_data):
   print("############ [%d] %s" % (sys._getframe().f_lineno, points_reward))
   print("############ [%d] %s" % (sys._getframe().f_lineno, total_days))
   print("############ [%d] %s" % (sys._getframe().f_lineno, today_signin))
-  params = {'mod': 'spacecp', 'ac': credit}
+  params = {'mod': 'spacecp', 'ac': 'credit'}
   url = 'https://www.hao4k.cn/home.php'
   test_resp1 = s.post(url, params=params)
   print(test_resp1)
