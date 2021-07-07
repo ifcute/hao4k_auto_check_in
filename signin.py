@@ -8,11 +8,6 @@ import time  # 引入time模块
 username = os.environ["HAO4K_USERNAME"]
 password = os.environ["HAO4K_PASSWORD"]
 
-# 添加 server 酱通知
-sckey = os.environ["SERVERCHAN_SCKEY"]
-send_url = "https://sctapi.ftqq.com/%s.send" % (sckey)
-send_content = 'Server ERROR'
-
 # Bark 通知
 bark_key = os.environ["SECRET_BARK_KEY"]
 bark_url = "https://api.day.app/%s/Hao4K签到结果通知/" % (bark_key)
@@ -83,19 +78,13 @@ if __name__ == "__main__":
     send_content = signin_log
     print(signin_log)
 
-  #params = {'title': 'Hao4k 每日签到结果通知：', 'desp': send_content}
-  #r = requests.post(send_url, params=params)
-  #if r.status_code == 200:
-  #  print('已通知 server 酱')
-  #else:
-  #  print('通知 Server 酱推送失败，详情：\n请求状态码：{}\n{}'.format(r.status_code, r.text))
-
+  # BARK 消息推送
   tim = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
   url = "%s\n%s\n%s\n%s" %(bark_url, username, tim, send_content)
   params = {'group': 'Hao4k 每日签到结果通知'}
   r = requests.post(url, params=params)
   if r.status_code == 200:
-    print('已通知 BEAK')
+    print('已通知 BARK')
   else:
-    print('通知 BEAK 推送失败，详情：\n请求状态码：{}\n{}'.format(r.status_code, r.text))
+    print('通知 BARK 推送失败，详情：\n请求状态码：{}\n{}'.format(r.status_code, r.text))
 
