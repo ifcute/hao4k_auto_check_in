@@ -29,7 +29,11 @@ form_data = {
 }
 inajax = '&inajax=1'
 
-signin_ranking = ''     # 签到排名
+signin_ranking = ''       # 签到排名
+consecutive_days = ''     # 连续天数
+signin_level = ''         # 签到等级
+points_reward = ''        # 积分奖励
+total_days = ''           # 总天数
 
 
 def run(form_data):
@@ -70,10 +74,18 @@ def run(form_data):
   else:
     print(test_resp.text)
     return '签到失败或者已经签到，请登录 hao4k 查看签到状态'
+
+  global signin_ranking       # 签到排名
+  global consecutive_days     # 连续天数
+  global signin_level         # 签到等级
+  global points_reward        # 积分奖励
+  global total_days           # 总天数
   form_text1 = re.search(r'您的签到排名：\d+', test_resp.text)
-  global signin_ranking
   signin_ranking = form_text1.group()
+  value = test_resp.text.xpath('//input[@id="lxlevel"]/@value')[0]
+  consecutive_days = "连续天数：%d天" %(value)
   print("############ [%d] %s" % (sys._getframe().f_lineno, signin_ranking))
+  print("############ [%d] %s" % (sys._getframe().f_lineno, consecutive_days))
 
 
 
