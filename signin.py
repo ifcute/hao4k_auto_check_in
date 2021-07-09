@@ -190,7 +190,7 @@ if __name__ == "__main__":
               signin_ranking, consecutive_days, signin_level, points_reward, total_days,
               today_signin,
               h_currency, k_currency,
-              str_datatime1)
+              str_datatime2)
   url = "%s%s" %(bark_url, message)
   params = {'group': 'Hao4k 每日签到结果通知'}
   r = requests.post(url, params=params)
