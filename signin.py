@@ -126,7 +126,7 @@ def judgment_time_rang():
   tz = pytz.timezone('Asia/Shanghai')       # 东八区
   tsec = time.time()                        # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
   datim_curr = datetime.fromtimestamp(tsec, tz)  # 返回基于时间戳的日期时间
-  tim1       = datetime.strptime(str(datim_curr.date()) + ' 23:30:00', '%Y-%m-%d %H:%M:%S')
+  tim1       = datetime.strptime(str(datim_curr.date()) + ' 23:45:00', '%Y-%m-%d %H:%M:%S')
   tim2       = datetime.strptime(str(datim_curr.date()) + ' 23:59:59', '%Y-%m-%d %H:%M:%S')
   print(datim_curr)
   print(tim1)
@@ -155,10 +155,10 @@ if __name__ == "__main__":
     # 异常处理执行后，不在执行后续语句
 
   # 由于时间不准，所以提前一段时间开始执行定时任务，例如 23：45
-  tsec = int(time.time())                   # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
-  tz = pytz.timezone('Asia/Shanghai')       # 东八区
-  datim = datetime.fromtimestamp(tsec, tz)  # 返回基于时间戳的日期时间
-  str_datatime1 = datim.strftime('%Y-%m-%d %H:%M:%S.%m %Z%z')   # 指定格式的输出时间
+  tsec1 = time.time()                         # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
+  tz1 = pytz.timezone('Asia/Shanghai')        # 东八区
+  datim1 = datetime.fromtimestamp(tsec1, tz1) # 返回基于时间戳的日期时间
+  str_datatime1 = datim1.strftime('%Y-%m-%d %H:%M:%S.%m %Z%z')   # 指定格式的输出时间
 
   ######################## 时间判断 ########################
   # 判断时间距离24点的差值
@@ -180,10 +180,10 @@ if __name__ == "__main__":
     print(signin_log)
 
   # BARK 消息推送
-  tsec = int(time.time())                   # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
-  tz = pytz.timezone('Asia/Shanghai')       # 东八区
-  datim = datetime.fromtimestamp(tsec, tz)  # 返回基于时间戳的日期时间
-  str_datatime2 = datim.strftime('%Y-%m-%d %H:%M:%S.%m %Z%z')   # 指定格式的输出时间
+  tsec2 = time.time()                         # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
+  tz2 = pytz.timezone('Asia/Shanghai')        # 东八区
+  datim2 = datetime.fromtimestamp(tsec2, tz2) # 返回基于时间戳的日期时间
+  str_datatime2 = datim2.strftime('%Y-%m-%d %H:%M:%S.%m %Z%z')   # 指定格式的输出时间
   message = "Hao4K签到结果通知/%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" \
             %(username,
               str_datatime1, send_content,
