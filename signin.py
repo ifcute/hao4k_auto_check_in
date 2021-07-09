@@ -158,7 +158,7 @@ if __name__ == "__main__":
   tsec = int(time.time())                   # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
   tz = pytz.timezone('Asia/Shanghai')       # 东八区
   datim = datetime.fromtimestamp(tsec, tz)  # 返回基于时间戳的日期时间
-  str_datatime1 = datim.strftime('%Y-%m-%d %H:%M:%S %Z%z')   # 指定格式的输出时间
+  str_datatime1 = datim.strftime('%Y-%m-%d %H:%M:%S.%m %Z%z')   # 指定格式的输出时间
 
   ######################## 时间判断 ########################
   # 判断时间距离24点的差值
@@ -182,7 +182,7 @@ if __name__ == "__main__":
   tsec = int(time.time())                   # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
   tz = pytz.timezone('Asia/Shanghai')       # 东八区
   datim = datetime.fromtimestamp(tsec, tz)  # 返回基于时间戳的日期时间
-  str_datatime2 = datim.strftime('%Y-%m-%d %H:%M:%S %Z%z')   # 指定格式的输出时间
+  str_datatime2 = datim.strftime('%Y-%m-%d %H:%M:%S.%m %Z%z')   # 指定格式的输出时间
   message = "Hao4K签到结果通知/%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" \
             %(username,
               str_datatime1, send_content,
