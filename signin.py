@@ -124,7 +124,7 @@ def run(form_data):
 # 判断时间
 def judgment_time_rang():
   tz = pytz.timezone('Asia/Shanghai')       # 东八区
-  tsec = int(time.time())                   # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
+  tsec = time.time()                        # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
   datim_curr = datetime.fromtimestamp(tsec, tz)  # 返回基于时间戳的日期时间
   tim1       = datetime.strptime(str(datim_curr.date()) + ' 23:30:00', '%Y-%m-%d %H:%M:%S')
   tim2       = datetime.strptime(str(datim_curr.date()) + ' 23:59:59', '%Y-%m-%d %H:%M:%S')
@@ -163,6 +163,7 @@ if __name__ == "__main__":
   ######################## 时间判断 ########################
   # 判断时间距离24点的差值
   diff_sec = judgment_time_rang()       # 得到距离24点的秒数差
+  print(diff_sec)
   time.sleep(diff_sec)                  # 延时
   # 延时后，理论上应该是24时，下面开始登录签到
 
