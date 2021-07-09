@@ -121,15 +121,50 @@ def run(form_data):
   print("############ [%d] %s" % (sys._getframe().f_lineno, h_currency))
   print("############ [%d] %s" % (sys._getframe().f_lineno, k_currency))
 
+# 判断时间
+def judgment_time_rang():
+  tz = pytz.timezone('Asia/Shanghai')       # 东八区
+  tsec = int(time.time())                   # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
+  datim_curr = datetime.fromtimestamp(tsec, tz)  # 返回基于时间戳的日期时间
+  tim1       = datetime.strptime(str(datim_curr.date()) + ' 23:30:00', '%Y-%m-%d %H:%M:%S')
+  tim2       = datetime.strptime(str(datim_curr.date()) + ' 23:59:59', '%Y-%m-%d %H:%M:%S')
+  print(datim_curr)
+  print(tim1)
+  print(tim2)
+  timestamp_curr  = time.mktime(datim_curr.timetuple())
+  timestamp_start = time.mktime(tim1.timetuple())
+  timestamp_end   = time.mktime(tim2.timetuple())
+  print(timestamp_curr )
+  print(timestamp_start)
+  print(timestamp_end  )
+
+  if timestamp_start < timestamp_curr <= timestamp_end:
+    diff_sec = timestamp_end - timestamp_curr  # 时间差值
+    return diff_sec
+  else:
+    return 0
+
 
 # 可以理解为程序的入口
 if __name__ == "__main__":
-  # 判断参数信息是否存在
+  ######################## 判断参数信息是否存在 ########################
   if not username or not password or not bark_key:
     print('未找到登录信息，请参考 readme 中指导，前往仓库 setting/secrets，添加对应 key')
     # 执行异常处理命令
     raise Exception('Could not find any keys')
     # 异常处理执行后，不在执行后续语句
+
+  # 由于时间不准，所以提前一段时间开始执行定时任务，例如 23：45
+  tsec = int(time.time())                   # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
+  tz = pytz.timezone('Asia/Shanghai')       # 东八区
+  datim = datetime.fromtimestamp(tsec, tz)  # 返回基于时间戳的日期时间
+  str_datatime1 = datim.strftime('%Y-%m-%d %H:%M:%S %Z%z')   # 指定格式的输出时间
+
+  ######################## 时间判断 ########################
+  # 判断时间距离24点的差值
+  diff_sec = judgment_time_rang()       # 得到距离24点的秒数差
+  time.sleep(diff_sec)                  # 延时
+  # 延时后，理论上应该是24时，下面开始登录签到
 
   # 执行登录流程，若登录成功返回信息为空，若登录失败将失败信息放到signin_log
   signin_log = run(form_data)
@@ -144,11 +179,17 @@ if __name__ == "__main__":
     print(signin_log)
 
   # BARK 消息推送
-  #tim = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-  tz = pytz.timezone('Asia/Shanghai') #东八区
-  tim = datetime.fromtimestamp(int(time.time()),
-    pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-  message = "Hao4K签到结果通知/%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(username, tim, send_content, signin_ranking, consecutive_days, signin_level, points_reward, total_days, today_signin, h_currency, k_currency)
+  tsec = int(time.time())                   # 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
+  tz = pytz.timezone('Asia/Shanghai')       # 东八区
+  datim = datetime.fromtimestamp(tsec, tz)  # 返回基于时间戳的日期时间
+  str_datatime2 = datim.strftime('%Y-%m-%d %H:%M:%S %Z%z')   # 指定格式的输出时间
+  message = "Hao4K签到结果通知/%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" \
+            %(username,
+              str_datatime1, send_content,
+              signin_ranking, consecutive_days, signin_level, points_reward, total_days,
+              today_signin,
+              h_currency, k_currency,
+              str_datatime1)
   url = "%s%s" %(bark_url, message)
   params = {'group': 'Hao4k 每日签到结果通知'}
   r = requests.post(url, params=params)
