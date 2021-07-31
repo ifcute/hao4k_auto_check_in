@@ -35,5 +35,3 @@
 > fork 本项目后，使用下面方法自动同步上游代码
 
 安装 Github App [Pull](https://github.com/apps/pull)， 将 fork 后的项目添加到 Repository access 列表中即可实现自动同步上游代码
-
-
